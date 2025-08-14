@@ -64,7 +64,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/github/github-original.svg" alt="GitHub" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/npm/simple-icons@15.9.0/icons/postman.svg" alt="Postman" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/vscode/vscode-original.svg" alt="VS Code" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" alt="(Fallback) Postman via Devicon" width="1" height="1" style="display:none"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" alt="(Fallback) Postman via Devicon" width="40" height="40"/>
 </p>
 
 > 💡 Postman icon uses **Simple Icons** (pinned) for reliability. Devicon fallback is hidden but left for future compatibility.
