@@ -1,2 +1,0 @@
-# Ghanshyam Sen
-Dev Profile
