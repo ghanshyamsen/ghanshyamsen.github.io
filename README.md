@@ -19,6 +19,8 @@ A professional and dedicated web developer highly experienced in managing effect
 
 ### ⚒️ Skills & Tools
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/devicon.min.css" />
+      
 #### **Frontend**
 <p>
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/>
@@ -32,11 +34,8 @@ A professional and dedicated web developer highly experienced in managing effect
 <p>
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="PHP" width="40" height="40"/>
 <!-- Laravel -->
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/laravel/laravel-plain.svg"
-     width="40" height="40" alt="Laravel"/>
-<!-- Zend (may be missing in newer sets; try this first) -->
-<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/zend/zend-plain.svg"
-     width="40" height="40" alt="Zend"/>
+<i class="devicon-laravel-plain" style="font-size:40px;"></i>
+<i class="devicon-php-plain" style="font-size:40px;"></i>
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/>
 </p>
 
