@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm Ghanshyam Sen</h1>
-<h3 align="center">💻 Web Developer | PHP | Laravel | Node.Js | React | Python</h3>
+<h3 align="center">💻 Web Developer | PHP | Laravel | Node.js | React | Python</h3>
 
 <p align="center">
   <a href="https://ghanshyamsen.github.io" target="_blank">🌐 Live Site</a> •
@@ -10,7 +10,7 @@
 ---
 
 ## 👨‍💻 About Me
-I’m a dedicated web developer focused on building fast, reliable, and maintainable applications.  
+I’m a dedicated web developer focused on building fast, reliable, and maintainable applications.
 I work across the stack with an emphasis on clean architecture, performance, and developer experience.
 
 ---
@@ -62,11 +62,12 @@ I work across the stack with an emphasis on clean architecture, performance, and
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/git/git-original.svg" alt="Git" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/github/github-original.svg" alt="GitHub" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/npm/simple-icons@15.9.0/icons/postman.svg" alt="Postman" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/vscode/vscode-original.svg" alt="VS Code" width="40" height="40"/>
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/postman/postman-plain.svg" alt="Postman" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" alt="(Fallback) Postman via Devicon" width="1" height="1" style="display:none"/>
 </p>
 
-> 💡 Icons are served via the Devicon jsDelivr CDN, pinned to a specific version for reliability.
+> 💡 Postman icon uses **Simple Icons** (pinned) for reliability. Devicon fallback is hidden but left for future compatibility.
 
 ---
 
