@@ -1,64 +1,92 @@
 <h1 align="center">Hi 👋, I'm Ghanshyam Sen</h1>
-<h3 align="center">💻 Web Developer | PHP | Laravel | Node.Js | React | Python </h3>
+<h3 align="center">💻 Web Developer | PHP | Laravel | Node.Js | React | Python</h3>
 
----
-
-### 📫 Contact Me
-- **Email:** [senghanshyamjdp@gmail.com](mailto:senghanshyamjdp@gmail.com)  
-- **Phone:** 077270 80075  
-- **Resume:** [View Resume](resume.pdf)  
-
----
-
-### 📝 Summary
-A professional and dedicated web developer highly experienced in managing effective teams. Offers expertise in data marketing analysis and revising websites to ensure user satisfaction. Looking to manage a strong team of developers while helping to maximize profits for a successful company.  
-- Good working knowledge of MVC Architecture for developing websites using Laravel and Zend Frameworks.  
-- Fixed bugs from existing websites and improved code quality.  
-
----
-
-### ⚒️ Skills & Tools
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/devicon.min.css" />
-      
-#### **Frontend**
-<p>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg" alt="CSS3" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/react/react-original.svg" alt="React" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/bootstrap/bootstrap-plain.svg" alt="Bootstrap" width="40" height="40"/>
-</p>
-
-#### **Backend**
-<p>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="PHP" width="40" height="40"/>
-<!-- Laravel -->
-<i class="devicon-laravel-plain" style="font-size:40px;"></i>
-<i class="devicon-php-plain" style="font-size:40px;"></i>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/>
-</p>
-
-#### **Databases**
-<p>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg" alt="MySQL" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="40" height="40"/>
-</p>
-
-#### **Tools & Others**
-<p>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/git/git-original.svg" alt="Git" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg" alt="GitHub" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/webpack/webpack-original.svg" alt="Webpack" width="40" height="40"/>
+<p align="center">
+  <a href="https://ghanshyamsen.github.io" target="_blank">🌐 Live Site</a> •
+  <a href="resume.pdf" target="_blank">📄 Resume</a> •
+  <a href="mailto:senghanshyamjdp@gmail.com">📫 Email</a>
 </p>
 
 ---
 
-### 🌐 Deployment Options
-- GitHub Pages  
-- Netlify  
-- Vercel  
+## 👨‍💻 About Me
+I’m a dedicated web developer focused on building fast, reliable, and maintainable applications.  
+I work across the stack with an emphasis on clean architecture, performance, and developer experience.
 
 ---
 
-**© {2025} Ghanshyam Sen**
+## ⚒️ Tech Stack (with icons)
+
+### Languages & Runtime
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/php/php-original.svg" alt="PHP" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/python/python-original.svg" alt="Python" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/>
+</p>
+
+### Frameworks & Libraries
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/laravel/laravel-plain.svg" alt="Laravel" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/zend/zend-plain.svg" alt="Zend" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/react/react-original.svg" alt="React" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/jquery/jquery-original.svg" alt="jQuery" width="40" height="40"/>
+</p>
+
+### Frontend
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/css3/css3-original.svg" alt="CSS3" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/bootstrap/bootstrap-plain.svg" alt="Bootstrap" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind CSS" width="40" height="40"/>
+</p>
+
+### Databases
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/mysql/mysql-original.svg" alt="MySQL" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/redis/redis-original.svg" alt="Redis" width="40" height="40"/>
+</p>
+
+### DevOps & Hosting
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/nginx/nginx-original.svg" alt="Nginx" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/apache/apache-original.svg" alt="Apache" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/linux/linux-original.svg" alt="Linux" width="40" height="40"/>
+</p>
+
+### Tools
+<p>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/git/git-original.svg" alt="Git" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/github/github-original.svg" alt="GitHub" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/vscode/vscode-original.svg" alt="VS Code" width="40" height="40"/>
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/postman/postman-plain.svg" alt="Postman" width="40" height="40"/>
+</p>
+
+> 💡 Icons are served via the Devicon jsDelivr CDN, pinned to a specific version for reliability.
+
+---
+
+## 📦 This Repo
+This repository hosts my simple one-page profile site:
+- `index.html` – Minimal profile with summary, skills, and an embedded resume preview  
+- `resume.pdf` – My resume  
+- `README.md` – This file
+
+To view locally, just open `index.html` in your browser.
+
+---
+
+## 🚀 Deploy
+- **GitHub Pages** (recommended for this repo)  
+- Netlify / Vercel / Any static host
+
+---
+
+## 📫 Contact
+- Email: <a href="mailto:senghanshyamjdp@gmail.com">senghanshyamjdp@gmail.com</a>
+
+---
