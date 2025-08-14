@@ -31,8 +31,12 @@ A professional and dedicated web developer highly experienced in managing effect
 #### **Backend**
 <p>
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/php/php-original.svg" alt="PHP" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/laravel/laravel-plain.svg" alt="Laravel" width="40" height="40"/>
-<img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/zend/zend-plain.svg" alt="Zend" width="40" height="40"/>
+<!-- Laravel -->
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/laravel/laravel-plain.svg"
+     width="40" height="40" alt="Laravel"/>
+<!-- Zend (may be missing in newer sets; try this first) -->
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons/zend/zend-plain.svg"
+     width="40" height="40" alt="Zend"/>
 <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/>
 </p>
 
