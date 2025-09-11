@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://ghanshyamsen.github.io" target="_blank">🌐 Live Site</a> •
-  <a href="resume.pdf" target="_blank">📄 Resume</a> •
+  <a href="G_Sen_Resume.pdf" target="_blank">📄 Resume</a> •
   <a href="mailto:senghanshyamjdp@gmail.com">📫 Email</a>
 </p>
 
@@ -74,7 +74,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 ## 📦 This Repo
 This repository hosts my simple one-page profile site:
 - `index.html` – Minimal profile with summary, skills, and an embedded resume preview  
-- `resume.pdf` – My resume  
+- `G_Sen_Resume.pdf` – My resume  
 - `README.md` – This file
 
 To view locally, just open `index.html` in your browser.
