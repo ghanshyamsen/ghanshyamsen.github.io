@@ -67,8 +67,6 @@ I work across the stack with an emphasis on clean architecture, performance, and
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" alt="(Fallback) Postman via Devicon" width="40" height="40"/>
 </p>
 
-> 💡 Postman icon uses **Simple Icons** (pinned) for reliability. Devicon fallback is hidden but left for future compatibility.
-
 ---
 
 ## 📦 This Repo
