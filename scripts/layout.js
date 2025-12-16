@@ -1,59 +1,64 @@
+/**
+ * ============================================
+ * GHANSHYAM SEN - PORTFOLIO LAYOUT CONTROLLER
+ * ============================================
+ */
+
 const THEME_STORAGE_KEY = "gsen-theme";
 
-
-// Load header.html into the div with id="header"
-fetch('partials/header.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('header').innerHTML = data;
-    markActiveNavigation();
-    initThemeToggle();
-  })
-  .catch(error => console.error('Error loading header:', error));
-
-
-fetch('partials/footer.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('footer').innerHTML = data;
-
-     updateFootnoteYear();
-  })
-  .catch(error => console.error('Error loading header:', error));
-
-fetch('partials/contact.html')
-  .then(response => response.text())
-  .then(data => {
-    document.getElementById('contact').innerHTML = data;
-  })
-  .catch(error => console.error('Error loading header:', error));
-
-
-function setLink() {
-  const navLinks = document.querySelectorAll('.nav-link');
-  const currentPath = window.location.pathname.split("/").pop(); // e.g. 'about.html' or ''
-  const currentHash = window.location.hash; // e.g. '#projects'
-
-  navLinks.forEach(link => {
-    const linkPath = link.getAttribute('href');
-    const dataActive = link.getAttribute('data-active');
-
-    // Reset any existing 'active' class
-    link.classList.remove('active');
-
-    // Check if link matches the current page or hash
-    if (
-      (linkPath === currentPath) ||                                 // exact match
-      (currentPath === '' && dataActive === 'home') ||              // for index.html or /
-      (currentPath === 'index.html' && dataActive === 'home') ||    // explicit home page
-      (linkPath.includes(currentHash) && currentHash !== '')        // for hash sections (#projects, #technologies)
-    ) {
-      link.classList.add('active');
-    }
-  });
+// Detect if we're in a subdirectory
+function getBasePath() {
+  const path = window.location.pathname;
+  if (path.includes('/blog/')) {
+    return '../';
+  }
+  return '';
 }
 
+// Apply saved theme immediately
+(function initTheme() {
+  try {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    applyTheme(stored === "light" ? "light" : "dark");
+  } catch (error) {
+    applyTheme("dark");
+  }
+})();
 
+// Load header
+const basePath = getBasePath();
+
+fetch(basePath + 'partials/header.html')
+  .then(response => response.text())
+  .then(data => {
+    // Fix relative links for subdirectory
+    let headerHtml = data;
+    if (basePath) {
+      headerHtml = headerHtml.replace(/href="index\.html/g, 'href="' + basePath + 'index.html');
+      headerHtml = headerHtml.replace(/href="resume\.html/g, 'href="' + basePath + 'resume.html');
+      headerHtml = headerHtml.replace(/href="blog\.html/g, 'href="' + basePath + 'blog.html');
+      headerHtml = headerHtml.replace(/href="about\.html/g, 'href="' + basePath + 'about.html');
+      headerHtml = headerHtml.replace(/href="assest\//g, 'href="' + basePath + 'assest/');
+    }
+    document.getElementById('header').innerHTML = headerHtml;
+    markActiveNavigation();
+    initThemeToggle();
+    initMobileMenu(); // Initialize hamburger menu
+  })
+  .catch(error => console.error('Error loading header:', error));
+
+// Load footer
+fetch(basePath + 'partials/footer.html')
+  .then(response => response.text())
+  .then(data => {
+    let footerHtml = data;
+    if (basePath) {
+      footerHtml = footerHtml.replace(/href="mailto:/g, 'href="mailto:');
+    }
+    document.getElementById('footer').innerHTML = footerHtml;
+    updateFootnoteYear();
+  })
+  .catch(error => console.error('Error loading footer:', error));
 
 function applyTheme(theme) {
   if (theme === "light") {
@@ -65,18 +70,34 @@ function applyTheme(theme) {
 
 function markActiveNavigation() {
   const pageKey = document.body.dataset.page;
-  if (!pageKey) {
-    return;
+  if (!pageKey) return;
+
+  // Mark active in desktop nav
+  const desktopSelector = `.nav-list .nav-link[data-active="${pageKey}"]`;
+  const desktopLinks = document.querySelectorAll(".nav-list .nav-link");
+  const activeDesktop = document.querySelector(desktopSelector);
+  
+  desktopLinks.forEach((link) => {
+    link.classList.remove("active");
+    link.removeAttribute("aria-current");
+  });
+  
+  if (activeDesktop) {
+    activeDesktop.classList.add("active");
+    activeDesktop.setAttribute("aria-current", "page");
   }
-  const selector = `.nav-link[data-active="${pageKey}"]`;
-  const activeLink = document.querySelector(selector);
-  if (activeLink) {
-    document.querySelectorAll(".top-nav .nav-link").forEach((link) => {
-      link.classList.remove("active");
-      link.removeAttribute("aria-current");
-    });
-    activeLink.classList.add("active");
-    activeLink.setAttribute("aria-current", "page");
+  
+  // Mark active in mobile nav
+  const mobileSelector = `.mobile-menu-link[data-active="${pageKey}"]`;
+  const mobileLinks = document.querySelectorAll(".mobile-menu-link");
+  const activeMobile = document.querySelector(mobileSelector);
+  
+  mobileLinks.forEach((link) => {
+    link.classList.remove("active");
+  });
+  
+  if (activeMobile) {
+    activeMobile.classList.add("active");
   }
 }
 
@@ -89,37 +110,70 @@ function updateFootnoteYear() {
 
 function initThemeToggle() {
   const toggle = document.querySelector(".theme-toggle");
-  if (!toggle) {
-    return;
-  }
+  if (!toggle) return;
 
-  const setPressed = () => {
+  const updateToggleIcon = () => {
     const isLight = document.body.classList.contains("theme-light");
+    const iconSpan = toggle.querySelector(".theme-toggle__icon");
+    if (iconSpan) {
+      iconSpan.innerHTML = isLight 
+        ? '<i class="bi bi-sun-fill"></i>' 
+        : '<i class="bi bi-moon-stars-fill"></i>';
+    }
     toggle.setAttribute("aria-pressed", String(isLight));
-    toggle.setAttribute("data-mode", isLight ? "light" : "dark");
   };
 
   toggle.addEventListener("click", () => {
     const isLight = document.body.classList.toggle("theme-light");
+    
     try {
       localStorage.setItem(THEME_STORAGE_KEY, isLight ? "light" : "dark");
     } catch (error) {
-      console.warn("Unable to persist theme", error);
+      console.warn("Unable to persist theme:", error);
     }
-    setPressed();
+    
+    updateToggleIcon();
   });
 
-  setPressed();
+  updateToggleIcon();
 }
 
-(function initialiseTheme() {
-  try {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    applyTheme(stored === "light" ? "light" : "dark");
-  } catch (error) {
-    applyTheme("dark");
+// Initialize Mobile Menu (Hamburger)
+function initMobileMenu() {
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  
+  if (!hamburgerBtn || !mobileMenu) {
+    console.log('Mobile menu elements not found');
+    return;
   }
-})();
+  
+  // Toggle menu on hamburger click
+  hamburgerBtn.addEventListener('click', function() {
+    hamburgerBtn.classList.toggle('active');
+    mobileMenu.classList.toggle('open');
+    document.body.classList.toggle('menu-open');
+  });
+  
+  // Close menu when clicking on a link
+  const mobileLinks = mobileMenu.querySelectorAll('a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    });
+  });
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+      hamburgerBtn.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.classList.remove('menu-open');
+    }
+  });
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   markActiveNavigation();

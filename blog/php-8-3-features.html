@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PHP 8.3 Features Every Developer Should Know | Ghanshyam Sen</title>
+  <meta name="description" content="Explore the latest PHP 8.3 features including typed class constants, json_validate(), and performance improvements." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">PHP</span>
+            <span><i class="bi bi-calendar3"></i> December 10, 2024</span>
+            <span><i class="bi bi-clock"></i> 7 min read</span>
+          </div>
+          <h1 class="blog-title">PHP 8.3 Features Every Developer Should Know</h1>
+          <p class="section-subtitle">Modern PHP features that make your code cleaner, safer, and more performant.</p>
+        </div>
+
+        <img src="../images/blog-php.png" alt="PHP 8.3 Features" class="blog-featured-image" />
+
+        <article class="blog-content">
+          <p>PHP continues to evolve with each release, and PHP 8.3 brings exciting new features that make our code cleaner, safer, and more performant. Let's explore the most impactful additions you should start using today.</p>
+
+          <h2>1. Typed Class Constants</h2>
+          <p>Finally! Class constants can now have explicit type declarations.</p>
+          
+          <pre><code>class PaymentGateway
+{
+    public const string CURRENCY = 'USD';
+    public const int MAX_RETRY = 3;
+    public const array SUPPORTED_METHODS = ['card', 'bank', 'wallet'];
+}
+
+class StripeGateway extends PaymentGateway
+{
+    // This would cause an error - type mismatch!
+    // public const string MAX_RETRY = 'three'; 
+    
+    public const int MAX_RETRY = 5; // Valid override
+}</code></pre>
+
+          <h2>2. json_validate() Function</h2>
+          <p>No more decoding just to check if JSON is valid:</p>
+          
+          <pre><code>// Old way - wasteful
+function isValidJson(string $json): bool
+{
+    json_decode($json);
+    return json_last_error() === JSON_ERROR_NONE;
+}
+
+// New way - PHP 8.3
+$json = '{"name": "Ghanshyam", "role": "developer"}';
+
+if (json_validate($json)) {
+    $data = json_decode($json, true);
+}</code></pre>
+
+          <h2>3. Dynamic Class Constant Fetch</h2>
+          
+          <pre><code>class Status
+{
+    public const PENDING = 'pending';
+    public const APPROVED = 'approved';
+    public const REJECTED = 'rejected';
+}
+
+$statusName = 'APPROVED';
+$status = Status::{$statusName};  // Returns 'approved'</code></pre>
+
+          <h2>4. #[\Override] Attribute</h2>
+          <p>Mark methods as overriding parent methods. The compiler will error if the parent method doesn't exist:</p>
+          
+          <pre><code>class BaseController
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+}
+
+class AdminController extends BaseController
+{
+    #[\Override]
+    public function authorize(): bool
+    {
+        return $this->user->isAdmin();
+    }
+}</code></pre>
+
+          <h2>5. Randomizer Additions</h2>
+          
+          <pre><code>$randomizer = new Random\Randomizer();
+
+// Get random bytes as hex string
+$token = $randomizer->getBytesFromString(
+    '0123456789abcdef',
+    32
+);
+
+// Random float between 0 and 1
+$percentage = $randomizer->getFloat(0, 1);</code></pre>
+
+          <h2>Migration Tips</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ol style="margin: 0; color: var(--text-muted);">
+              <li>Run your test suite with deprecation warnings enabled</li>
+              <li>Add type declarations to class constants gradually</li>
+              <li>Replace json_decode validation patterns with json_validate()</li>
+              <li>Consider adding #[\Override] to catch typos early</li>
+            </ol>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>PHP 8.3 continues the language's evolution toward stronger typing and better developer experience. These features aren't just syntactic sugar—they help catch bugs at compile time and make your intentions clearer.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">PHP</span>
+            <span class="blog-tag">PHP 8.3</span>
+            <span class="blog-tag">Backend</span>
+            <span class="blog-tag">New Features</span>
+          </div>
+
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications.</p>
+            </div>
+          </div>
+
+          <div class="blog-nav">
+            <a href="socketio-realtime-guide.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">Socket.io Real-Time Guide</div>
+            </a>
+            <a href="react-performance-optimization.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">React Performance Optimization</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>

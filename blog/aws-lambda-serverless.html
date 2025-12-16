@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serverless with AWS Lambda | Ghanshyam Sen</title>
+  <meta name="description" content="Understanding serverless computing, Lambda functions, and building cost-effective scalable backends on AWS." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">AWS</span>
+            <span><i class="bi bi-calendar3"></i> December 3, 2024</span>
+            <span><i class="bi bi-clock"></i> 10 min read</span>
+          </div>
+          <h1 class="blog-title">Serverless Architecture with AWS Lambda: When and How</h1>
+          <p class="section-subtitle">Build cost-effective, infinitely scalable backends without managing servers.</p>
+        </div>
+
+        <img src="../images/blog-aws.png" alt="AWS Lambda Serverless" class="blog-featured-image" />
+
+        <article class="blog-content">
+          <p>Serverless doesn't mean there are no servers—it means you don't manage them. AWS Lambda lets you run code without provisioning servers, and you only pay for what you use.</p>
+
+          <h2>When to Use Serverless</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 1rem 0 2rem;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Event-driven processing</strong> - S3 uploads, database changes</li>
+              <li><strong style="color: var(--text);">APIs with variable traffic</strong> - From zero to thousands</li>
+              <li><strong style="color: var(--text);">Scheduled tasks</strong> - Cron jobs, cleanup scripts</li>
+              <li><strong style="color: var(--text);">Microservices</strong> - Independent, focused functions</li>
+            </ul>
+          </div>
+
+          <h2>Your First Lambda Function</h2>
+          
+          <pre><code>// handler.js
+exports.handler = async (event) => {
+  const { httpMethod, path, body } = event;
+  
+  if (httpMethod === 'GET' && path === '/users') {
+    const users = await getUsers();
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ users })
+    };
+  }
+  
+  return { statusCode: 404, body: 'Not found' };
+};</code></pre>
+
+          <h2>Using Serverless Framework</h2>
+          
+          <pre><code># serverless.yml
+service: my-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+    timeout: 30
+    memorySize: 256</code></pre>
+
+          <h2>Handling Cold Starts</h2>
+          
+          <pre><code>// Keep connections outside handler
+let dbConnection = null;
+
+async function getConnection() {
+  if (!dbConnection) {
+    dbConnection = await mysql.createConnection({...});
+  }
+  return dbConnection;
+}
+
+exports.handler = async (event) => {
+  const db = await getConnection();
+  // Use db...
+};</code></pre>
+
+          <h2>Cost Optimization Tips</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Right-size memory</strong> - More memory = more CPU</li>
+              <li><strong style="color: var(--text);">Set appropriate timeouts</strong> - Don't pay for idle time</li>
+              <li><strong style="color: var(--text);">Use ARM64</strong> - 20% cheaper, often faster</li>
+              <li><strong style="color: var(--text);">Batch processing</strong> - Multiple items per invocation</li>
+            </ul>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>Serverless isn't right for everything, but when it fits, it's incredibly powerful. Start with event-driven workloads and APIs with variable traffic.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">AWS</span>
+            <span class="blog-tag">Lambda</span>
+            <span class="blog-tag">Serverless</span>
+            <span class="blog-tag">Cloud</span>
+          </div>
+
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications.</p>
+            </div>
+          </div>
+
+          <div class="blog-nav">
+            <a href="mysql-query-optimization.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">MySQL Optimization</div>
+            </a>
+            <a href="jwt-vs-session-auth.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">JWT vs Session Auth</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>

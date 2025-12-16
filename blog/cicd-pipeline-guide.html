@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CI/CD Pipeline Setup | Ghanshyam Sen</title>
+  <meta name="description" content="Step-by-step guide to setting up automated testing, building, and deployment pipelines using GitHub Actions." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">DevOps</span>
+            <span><i class="bi bi-calendar3"></i> November 20, 2024</span>
+            <span><i class="bi bi-clock"></i> 11 min read</span>
+          </div>
+          <h1 class="blog-title">CI/CD Pipeline Setup: From Zero to Production Deploy</h1>
+          <p class="section-subtitle">Automate testing, building, and deployment with GitHub Actions.</p>
+        </div>
+
+        <img src="../images/blog-cicd.png" alt="CI/CD Pipeline DevOps" class="blog-featured-image" />
+
+        <article class="blog-content">
+          <p>Manual deployments are error-prone, stressful, and slow. A proper CI/CD pipeline automates testing, building, and deployment, letting you ship with confidence.</p>
+
+          <h2>What We're Building</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 1rem 0 2rem;">
+            <ol style="margin: 0; color: var(--text-muted);">
+              <li>Run on every push and pull request</li>
+              <li>Install dependencies and run linting</li>
+              <li>Execute test suite</li>
+              <li>Build the application</li>
+              <li>Deploy to production on main branch</li>
+            </ol>
+          </div>
+
+          <h2>Basic GitHub Actions Workflow</h2>
+          
+          <pre><code>name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linting
+        run: npm run lint
+      
+      - name: Run tests
+        run: npm test</code></pre>
+
+          <h2>Deploy Job</h2>
+          
+          <pre><code>  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/myapp
+            git pull origin main
+            npm ci --production
+            pm2 restart myapp</code></pre>
+
+          <h2>Best Practices</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Cache dependencies</strong> - Speeds up builds</li>
+              <li><strong style="color: var(--text);">Fail fast</strong> - Run linting before tests</li>
+              <li><strong style="color: var(--text);">Use matrix builds</strong> - Test multiple versions</li>
+              <li><strong style="color: var(--text);">Keep secrets secure</strong> - Never log them</li>
+              <li><strong style="color: var(--text);">Add status badges</strong> - Show build status in README</li>
+            </ul>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>CI/CD transforms how teams ship software. Start simple, then add complexity as needed. The investment in automation pays dividends in reliability, speed, and developer happiness.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">CI/CD</span>
+            <span class="blog-tag">GitHub Actions</span>
+            <span class="blog-tag">DevOps</span>
+            <span class="blog-tag">Automation</span>
+          </div>
+
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications.</p>
+            </div>
+          </div>
+
+          <div class="blog-nav">
+            <a href="mongodb-vs-mysql.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">MongoDB vs MySQL</div>
+            </a>
+            <a href="solid-principles-practice.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">SOLID Principles</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>

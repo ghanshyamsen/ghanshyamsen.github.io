@@ -10,7 +10,8 @@
 ---
 
 ## 👨‍💻 About Me
-I’m a dedicated web developer focused on building fast, reliable, and maintainable applications.
+
+I'm a dedicated web developer focused on building fast, reliable, and maintainable applications.
 I work across the stack with an emphasis on clean architecture, performance, and developer experience.
 
 ---
@@ -18,6 +19,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 ## ⚒️ Tech Stack (with icons)
 
 ### Languages & Runtime
+
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/php/php-original.svg" alt="PHP" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40"/>
@@ -26,6 +28,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 </p>
 
 ### Frameworks & Libraries
+
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/laravel/laravel-plain.svg" alt="Laravel" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/zend/zend-plain.svg" alt="Zend" width="40" height="40"/>
@@ -34,6 +37,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 </p>
 
 ### Frontend
+
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/html5/html5-original.svg" alt="HTML5" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/css3/css3-original.svg" alt="CSS3" width="40" height="40"/>
@@ -42,6 +46,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 </p>
 
 ### Databases
+
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/mysql/mysql-original.svg" alt="MySQL" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="40" height="40"/>
@@ -50,6 +55,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 </p>
 
 ### DevOps & Hosting
+
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/nginx/nginx-original.svg" alt="Nginx" width="40" height="40"/>
@@ -59,6 +65,7 @@ I work across the stack with an emphasis on clean architecture, performance, and
 </p>
 
 ### Tools
+
 <p>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/git/git-original.svg" alt="Git" width="40" height="40"/>
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.15.1/icons/github/github-original.svg" alt="GitHub" width="40" height="40"/>
@@ -70,9 +77,11 @@ I work across the stack with an emphasis on clean architecture, performance, and
 ---
 
 ## 📦 This Repo
+
 This repository hosts my simple one-page profile site:
-- `index.html` – Minimal profile with summary, skills, and an embedded resume preview  
-- `G_Sen_Resume.pdf` – My resume  
+
+- `index.html` – Minimal profile with summary, skills, and an embedded resume preview
+- `G_Sen_Resume.pdf` – My resume
 - `README.md` – This file
 
 To view locally, just open `index.html` in your browser.
@@ -80,12 +89,14 @@ To view locally, just open `index.html` in your browser.
 ---
 
 ## 🚀 Deploy
-- **GitHub Pages** (recommended for this repo)  
+
+- **GitHub Pages** (recommended for this repo)
 - Netlify / Vercel / Any static host
 
 ---
 
 ## 📫 Contact
+
 - Email: <a href="mailto:senghanshyamjdp@gmail.com">senghanshyamjdp@gmail.com</a>
 
 ---

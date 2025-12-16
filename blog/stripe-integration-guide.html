@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Integrating Stripe Payments | Ghanshyam Sen</title>
+  <meta name="description" content="Implement secure payment processing with Stripe, including subscriptions, webhooks, and handling edge cases." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">Payment</span>
+            <span><i class="bi bi-calendar3"></i> November 10, 2024</span>
+            <span><i class="bi bi-clock"></i> 12 min read</span>
+          </div>
+          <h1 class="blog-title">Integrating Stripe Payments: A Developer's Complete Guide</h1>
+          <p class="section-subtitle">Accept payments securely with Stripe Checkout, subscriptions, and webhooks.</p>
+        </div>
+
+        <img src="../images/blog-stripe.png" alt="Stripe Payment Integration" class="blog-featured-image" />
+
+        <article class="blog-content">
+          <p>Payment integration can be complex, but Stripe makes it manageable. After implementing Stripe in multiple production applications, here's everything you need to know.</p>
+
+          <h2>One-Time Payments with Checkout</h2>
+          
+          <pre><code>// Create Checkout Session
+app.post('/create-checkout', async (req, res) => {
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: [{
+      price_data: {
+        currency: 'usd',
+        product_data: { name: product.name },
+        unit_amount: product.price * 100,
+      },
+      quantity: 1,
+    }],
+    mode: 'payment',
+    success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${origin}/cancel`,
+  });
+  
+  res.json({ url: session.url });
+});</code></pre>
+
+          <h2>Subscription Payments</h2>
+          
+          <pre><code>const session = await stripe.checkout.sessions.create({
+  customer: user.stripeCustomerId,
+  line_items: [{
+    price: 'price_xxxxxxxxxxxxx', // From Stripe Dashboard
+    quantity: 1,
+  }],
+  mode: 'subscription',
+  success_url: `${baseUrl}/subscription/success`,
+  cancel_url: `${baseUrl}/subscription/cancel`,
+});</code></pre>
+
+          <h2>Webhooks - The Critical Part</h2>
+          <p>Never trust client-side confirmations. Use webhooks:</p>
+          
+          <pre><code>app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), 
+  async (req, res) => {
+    const event = stripe.webhooks.constructEvent(
+      req.body,
+      req.headers['stripe-signature'],
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+    
+    switch (event.type) {
+      case 'checkout.session.completed':
+        await handleCheckoutComplete(event.data.object);
+        break;
+      case 'invoice.paid':
+        await handleInvoicePaid(event.data.object);
+        break;
+    }
+    
+    res.json({ received: true });
+  }
+);</code></pre>
+
+          <h2>Test Cards</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted); font-family: monospace;">
+              <li><code>4242 4242 4242 4242</code> - Successful payment</li>
+              <li><code>4000 0000 0000 0002</code> - Card declined</li>
+              <li><code>4000 0000 0000 9995</code> - Insufficient funds</li>
+              <li><code>4000 0027 6000 3184</code> - Requires 3D Secure</li>
+            </ul>
+          </div>
+
+          <h2>Security Checklist</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li>✅ Never log full card numbers</li>
+              <li>✅ Use webhook signature verification</li>
+              <li>✅ Store Stripe IDs, not card details</li>
+              <li>✅ Use HTTPS everywhere</li>
+              <li>✅ Implement idempotency for retries</li>
+            </ul>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>Stripe's documentation is excellent, but real-world integration has nuances. Always test thoroughly and never trust client-side payment confirmations.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">Stripe</span>
+            <span class="blog-tag">Payments</span>
+            <span class="blog-tag">Node.js</span>
+            <span class="blog-tag">E-commerce</span>
+          </div>
+
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications.</p>
+            </div>
+          </div>
+
+          <div class="blog-nav">
+            <a href="solid-principles-practice.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">SOLID Principles</div>
+            </a>
+            <a href="junior-to-senior-developer.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">Junior to Senior Developer</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>

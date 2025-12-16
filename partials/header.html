@@ -1,18 +1,54 @@
 <header class="site-topbar">
-  <div class="container position-relative d-flex justify-content-center align-items-center py-3">
-    <nav class="top-nav shadow-sm">
-      <ul class="nav nav-pills gap-3 text-uppercase small m-0">
-        <li class="nav-item"><a class="nav-link" data-active="home" href="index.html">Home</a></li>
-        <li class="nav-item"><a class="nav-link" data-active="resume" href="resume.html">Resume</a></li>
-        <!-- <li class="nav-item"><a class="nav-link" data-active="about" href="about.html">About</a></li> -->
-        <li class="nav-item"><a class="nav-link" href="index.html#projects">Projects</a></li>
-        <li class="nav-item"><a class="nav-link" href="index.html#technologies">Tech</a></li>
-        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        <li class="nav-item"><a class="btn btn-outline-current btn-sm px-3" href="assest/G_Sen_Resume_PHP.pdf" download>Download CV</a></li>
-      </ul>
+  <div class="container">
+    <nav class="navbar-custom">
+      <!-- Logo/Brand -->
+      <a href="index.html" class="navbar-brand">
+        <span class="brand-icon">GS</span>
+        <span class="brand-text">Ghanshyam</span>
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <div class="nav-desktop">
+        <ul class="nav-list">
+          <li><a class="nav-link" data-active="home" href="index.html"><i class="bi bi-house-door"></i> Home</a></li>
+          <li><a class="nav-link" data-active="resume" href="resume.html"><i class="bi bi-file-person"></i> Resume</a></li>
+          <li><a class="nav-link" data-active="blog" href="blog.html"><i class="bi bi-journal-text"></i> Blog</a></li>
+          <li><a class="nav-link" href="index.html#projects"><i class="bi bi-folder"></i> Projects</a></li>
+          <li><a class="nav-link" href="#contact"><i class="bi bi-chat-dots"></i> Contact</a></li>
+        </ul>
+        <a class="btn-download" href="assest/G_Sen_Resume_PHP.pdf" download>
+          <i class="bi bi-download"></i> Download CV
+        </a>
+      </div>
+      
+      <!-- Right Side Controls -->
+      <div class="nav-right-controls">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle" type="button" aria-label="Toggle theme">
+          <span class="theme-toggle__icon" aria-hidden="true">
+            <i class="bi bi-moon-stars-fill"></i>
+          </span>
+        </button>
+        
+        <!-- Mobile Hamburger Menu -->
+        <button class="hamburger-btn" type="button" aria-label="Toggle menu" id="hamburgerBtn">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </nav>
-    <button class="theme-toggle" type="button" aria-label="Toggle theme">
-      <span class="theme-toggle__icon" aria-hidden="true"></span>
-    </button>
+    
+    <!-- Mobile Slide Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a class="mobile-menu-link" data-active="home" href="index.html"><i class="bi bi-house-door"></i> Home</a>
+      <a class="mobile-menu-link" data-active="resume" href="resume.html"><i class="bi bi-file-person"></i> Resume</a>
+      <a class="mobile-menu-link" data-active="blog" href="blog.html"><i class="bi bi-journal-text"></i> Blog</a>
+      <a class="mobile-menu-link" href="index.html#projects"><i class="bi bi-folder"></i> Projects</a>
+      <a class="mobile-menu-link" href="#contact"><i class="bi bi-chat-dots"></i> Contact</a>
+      <a class="mobile-menu-download" href="assest/G_Sen_Resume_PHP.pdf" download>
+        <i class="bi bi-download"></i> Download CV
+      </a>
+    </div>
   </div>
 </header>

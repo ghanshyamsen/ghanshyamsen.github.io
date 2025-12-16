@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Real-Time Applications with Socket.io | Ghanshyam Sen</title>
+  <meta name="description" content="Dive deep into building real-time features like live chat, notifications, and collaborative tools using Socket.io and Node.js." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">Node.js</span>
+            <span><i class="bi bi-calendar3"></i> December 12, 2024</span>
+            <span><i class="bi bi-clock"></i> 10 min read</span>
+          </div>
+          <h1 class="blog-title">Real-Time Applications with Socket.io: A Complete Guide</h1>
+          <p class="section-subtitle">Build live chat, notifications, and collaborative features that users love.</p>
+        </div>
+
+        <img src="../images/blog-socketio.png" alt="Socket.io Real-Time Applications" class="blog-featured-image" />
+
+        <article class="blog-content">
+          <p>Real-time communication has become essential in modern web applications. From live chat to collaborative editing, users expect instant updates. In this guide, I'll share everything I've learned building real-time features for production applications serving thousands of concurrent users.</p>
+
+          <h2>Why Socket.io?</h2>
+          <p>While WebSockets provide the underlying protocol, Socket.io offers a robust abstraction with automatic reconnection, room management, and fallback transports. It's battle-tested and handles edge cases you don't want to worry about.</p>
+
+          <h2>Setting Up the Server</h2>
+          <p>Let's start with a basic Socket.io server setup with Express:</p>
+          
+          <pre><code>// server.js
+const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+  
+  socket.on('disconnect', () => {
+    console.log('User disconnected:', socket.id);
+  });
+});
+
+server.listen(3001, () => {
+  console.log('Server running on port 3001');
+});</code></pre>
+
+          <h2>Implementing Room-Based Chat</h2>
+          <p>Rooms are perfect for features like chat rooms, project channels, or any grouped communication:</p>
+          
+          <pre><code>io.on('connection', (socket) => {
+  // Join a room
+  socket.on('join-room', (roomId, userId) => {
+    socket.join(roomId);
+    socket.to(roomId).emit('user-joined', {
+      userId,
+      message: `User ${userId} joined the room`
+    });
+  });
+  
+  // Handle messages
+  socket.on('send-message', (data) => {
+    const { roomId, message, userId } = data;
+    
+    io.to(roomId).emit('new-message', {
+      userId,
+      message,
+      timestamp: new Date().toISOString()
+    });
+  });
+});</code></pre>
+
+          <h2>Client-Side Implementation</h2>
+          
+          <pre><code>// client.js
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3001');
+
+socket.on('connect', () => {
+  console.log('Connected to server');
+  socket.emit('join-room', 'room-123', 'user-456');
+});
+
+socket.on('new-message', (data) => {
+  displayMessage(data);
+});
+
+function sendMessage(message) {
+  socket.emit('send-message', {
+    roomId: 'room-123',
+    message,
+    userId: 'user-456'
+  });
+}</code></pre>
+
+          <h2>Scaling with Redis Adapter</h2>
+          <p>For production with multiple server instances, use the Redis adapter:</p>
+          
+          <pre><code>const { createAdapter } = require('@socket.io/redis-adapter');
+const { createClient } = require('redis');
+
+const pubClient = createClient({ url: 'redis://localhost:6379' });
+const subClient = pubClient.duplicate();
+
+Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+  io.adapter(createAdapter(pubClient, subClient));
+  server.listen(3001);
+});</code></pre>
+
+          <h2>Authentication & Security</h2>
+          
+          <pre><code>io.use((socket, next) => {
+  const token = socket.handshake.auth.token;
+  
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    socket.user = user;
+    next();
+  } catch (err) {
+    next(new Error('Authentication failed'));
+  }
+});</code></pre>
+
+          <h2>Best Practices</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Handle disconnections gracefully</strong> - Clean up user state and notify others</li>
+              <li><strong style="color: var(--text);">Implement message acknowledgments</strong> - Confirm delivery for critical messages</li>
+              <li><strong style="color: var(--text);">Rate limit events</strong> - Prevent spam and abuse</li>
+              <li><strong style="color: var(--text);">Use namespaces</strong> - Separate concerns for different features</li>
+              <li><strong style="color: var(--text);">Monitor connections</strong> - Track active users and performance</li>
+            </ul>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>Socket.io makes building real-time features accessible and maintainable. Start simple, handle edge cases, and scale with Redis when needed. The key is understanding the event-driven nature and designing your application around it.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">Node.js</span>
+            <span class="blog-tag">Socket.io</span>
+            <span class="blog-tag">WebSockets</span>
+            <span class="blog-tag">Real-time</span>
+            <span class="blog-tag">JavaScript</span>
+          </div>
+
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications.</p>
+            </div>
+          </div>
+
+          <div class="blog-nav">
+            <a href="laravel-rest-api-best-practices.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">Laravel REST API Best Practices</div>
+            </a>
+            <a href="php-8-3-features.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">PHP 8.3 Features</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>
