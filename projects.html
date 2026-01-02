@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Projects & Portfolio | Ghanshyam Sen - Full-Stack Developer</title>
+    <meta
+      name="description"
+      content="Explore 14+ web development projects by Ghanshyam Sen including SaaS platforms, healthcare apps, e-commerce solutions, and enterprise systems."
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link href="style.css" rel="stylesheet" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script defer src="scripts/layout.js"></script>
+  </head>
+  <body class="page" data-page="projects">
+    <div id="header"></div>
+    <main>
+      <!-- Hero Section -->
+      <section class="projects-hero">
+        <div class="container">
+          <div class="projects-hero-content text-center">
+            <p class="section-heading">Portfolio</p>
+            <h1 class="hero-title">
+              Projects I've <span class="gradient-text">Crafted</span>
+            </h1>
+            <p class="section-subtitle mx-auto" style="max-width: 700px">
+              A curated collection of 14+ production-grade applications spanning
+              healthcare, SaaS, e-commerce, logistics, and education—built with
+              modern architectures and refined engineering practices.
+            </p>
+
+            <div class="hero-stats justify-content-center mt-4 mb-4">
+              <div class="hero-stat">
+                <span class="stat-value">14+</span>
+                <span class="stat-label">Projects</span>
+              </div>
+              <div class="hero-stat">
+                <span class="stat-value">6+</span>
+                <span class="stat-label">Years</span>
+              </div>
+              <div class="hero-stat">
+                <span class="stat-value">8</span>
+                <span class="stat-label">Industries</span>
+              </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="portfolio-filters">
+              <button class="filter-btn active" data-filter="all">
+                All Projects
+              </button>
+              <button class="filter-btn" data-filter="healthcare">
+                Healthcare
+              </button>
+              <button class="filter-btn" data-filter="saas">SaaS</button>
+              <button class="filter-btn" data-filter="logistics">
+                Logistics
+              </button>
+              <button class="filter-btn" data-filter="education">
+                Education
+              </button>
+              <button class="filter-btn" data-filter="services">
+                Services
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects Grid -->
+      <section class="py-5" id="portfolio-grid">
+        <div class="container">
+          <div class="portfolio-grid">
+            <!-- 1. MyFirstJob -->
+            <article class="portfolio-card" data-category="education">
+              <div class="portfolio-card-image">
+                <img
+                  src="assest/mfj_thumnail.png"
+                  alt="MyFirstJob Platform"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-myfirstjob.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://myfirstjob.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Job Platform</span>
+                <h3 class="portfolio-title">MyFirstJob</h3>
+                <p class="portfolio-desc">
+                  Education-first job platform for students aged 14-22 with AI
+                  resume coaching, job matching, and parent tracking.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>Node.js</li>
+                  <li>React</li>
+                  <li>MongoDB</li>
+                  <li>Socket.io</li>
+                  <li>Stripe</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 2. MijnSollicitatie -->
+            <article class="portfolio-card" data-category="saas">
+              <div class="portfolio-card-image">
+                <img
+                  src="assest/mijin_thumb.png"
+                  alt="MijnSollicitatie CV Builder"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-mijnsollicitatie.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.mijnsollicitatie.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Resume Builder</span>
+                <h3 class="portfolio-title">MijnSollicitatie</h3>
+                <p class="portfolio-desc">
+                  Dutch CV & cover letter builder trusted by 50,000+ users.
+                  Multilingual templates with professional formatting.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Zend</li>
+                  <li>MySQL</li>
+                  <li>Mollie</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 3. TestGeek -->
+            <article class="portfolio-card" data-category="education">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/testgeek.png"
+                  alt="TestGeek SAT ACT Prep"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-testgeek.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.testgeek.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Education</span>
+                <h3 class="portfolio-title">TestGeek</h3>
+                <p class="portfolio-desc">
+                  SAT & ACT tutoring platform with top 1% tutors. Features
+                  classroom courses, private tutoring, and video vault.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>ZF3</li>
+                  <li>MySQL</li>
+                  <li>JavaScript</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 4. Fisioforce -->
+            <article class="portfolio-card" data-category="healthcare">
+              <div class="portfolio-card-image">
+                <img
+                  src="assest/fisioforce_thumb.png"
+                  alt="Fisioforce Physiotherapy"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-fisioforce.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.fisioforce.io"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Healthcare</span>
+                <h3 class="portfolio-title">Fisioforce</h3>
+                <p class="portfolio-desc">
+                  Home physiotherapy booking platform in Spain. Book certified
+                  physiotherapists with calendar sync and online payments.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Laravel</li>
+                  <li>Stripe</li>
+                  <li>Google API</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 5. Flytte -->
+            <article class="portfolio-card" data-category="logistics">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/flytte.png"
+                  alt="Flytte Delivery Service"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-flytte.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.flytte.fr"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Logistics</span>
+                <h3 class="portfolio-title">Flytte Partners</h3>
+                <p class="portfolio-desc">
+                  Same-day delivery service in France. 2-hour delivery for
+                  businesses and individuals with eco-friendly options.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>ZF3</li>
+                  <li>Stripe</li>
+                  <li>REST APIs</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 6. Autoroute61 -->
+            <article class="portfolio-card" data-category="logistics">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/autoroute61.png"
+                  alt="Autoroute61 Delivery"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-autoroute61.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://autoroute61.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Logistics</span>
+                <h3 class="portfolio-title">Autoroute 61</h3>
+                <p class="portfolio-desc">
+                  Last-mile delivery with professional assembly service. Expert
+                  delivery and furniture mounting for businesses.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>ZF3</li>
+                  <li>Stripe</li>
+                  <li>REST APIs</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 7. Baily -->
+            <article class="portfolio-card" data-category="saas">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/baily.png"
+                  alt="Baily Back Office SaaS"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-baily.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.getbaily.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">SaaS</span>
+                <h3 class="portfolio-title">Baily</h3>
+                <p class="portfolio-desc">
+                  All-in-one back-office tool for trades. Quotes, invoices,
+                  scheduling, GPS tracking, and subcontractor management.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Laravel</li>
+                  <li>Blade</li>
+                  <li>Stripe</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 8. Agrimio -->
+            <article class="portfolio-card" data-category="saas">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/agrimio.png"
+                  alt="Agrimio ERP Platform"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-agrimio.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://agrimio.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">ERP / SaaS</span>
+                <h3 class="portfolio-title">Agrimio</h3>
+                <p class="portfolio-desc">
+                  Complete ERP SaaS for inventory, sales, purchases, invoicing,
+                  credit management, and expense reporting.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Laravel</li>
+                  <li>MySQL</li>
+                  <li>PDF/CSV</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 9. Bobos.ai -->
+            <article class="portfolio-card" data-category="saas">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/bobos.png"
+                  alt="Bobos AI Marketing"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-bobos.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a href="https://bobos.ai" target="_blank" class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">AI / Marketing</span>
+                <h3 class="portfolio-title">Bobos.ai</h3>
+                <p class="portfolio-desc">
+                  AI-powered marketing strategy generator. Get customer
+                  personas, messaging, content ideas, and channel strategy free.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>ZF3</li>
+                  <li>OpenAI</li>
+                  <li>Stripe</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 10. TagConnect -->
+            <article class="portfolio-card" data-category="saas">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/tagconnect.png"
+                  alt="TagConnect Events"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-tagconnect.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://tagconnect.viewdemo.info"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Event Management</span>
+                <h3 class="portfolio-title">TagConnect</h3>
+                <p class="portfolio-desc">
+                  Event planning & coordination platform. Smart scheduling,
+                  attendee management, and real-time collaboration.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Laravel</li>
+                  <li>MySQL</li>
+                  <li>JavaScript</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 11. Excellent Painters -->
+            <article class="portfolio-card" data-category="services">
+              <div class="portfolio-card-image">
+                <img
+                  src="assest/excellentpainters_thumnail.png"
+                  alt="Excellent Painters USA"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-excellentpainters.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.excellentpainters.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Services</span>
+                <h3 class="portfolio-title">Excellent Painters</h3>
+                <p class="portfolio-desc">
+                  Nationwide painting service platform across USA. Residential &
+                  commercial services with online booking.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Zend</li>
+                  <li>MySQL</li>
+                  <li>QuickBooks</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 12. Narware -->
+            <article class="portfolio-card" data-category="saas">
+              <div class="portfolio-card-image">
+                <img
+                  src="assest/narware.png"
+                  alt="Narware Webinar CRM"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-narware.html" class="btn-view"
+                      >View Project</a
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">SaaS / Automation</span>
+                <h3 class="portfolio-title">Narware Technology</h3>
+                <p class="portfolio-desc">
+                  Webinar CRM & sales automation platform. Salesforce/Zoom
+                  integration, AI reminders, and 100+ analytics metrics.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>Node.js</li>
+                  <li>React</li>
+                  <li>MemSQL</li>
+                  <li>Lambda</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 13. Promptive Health -->
+            <article class="portfolio-card" data-category="healthcare">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/promptive.png"
+                  alt="Promptive Health Platform"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-promptive.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.promptive.health"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Healthcare</span>
+                <h3 class="portfolio-title">Promptive Health</h3>
+                <p class="portfolio-desc">
+                  Healthcare market research platform for verified
+                  professionals. HIPAA-conscious with real-time collaboration.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>Laravel</li>
+                  <li>Socket.io</li>
+                  <li>OpenAI</li>
+                  <li>MySQL</li>
+                </ul>
+              </div>
+            </article>
+
+            <!-- 14. Alleva Home Care -->
+            <article class="portfolio-card" data-category="healthcare">
+              <div class="portfolio-card-image">
+                <img
+                  src="images/projects/alleva.png"
+                  alt="Alleva Home Care Seattle"
+                  loading="lazy"
+                />
+                <div class="portfolio-card-overlay">
+                  <div class="overlay-content">
+                    <a href="project-alleva.html" class="btn-view"
+                      >View Project</a
+                    >
+                    <a
+                      href="https://www.allevahomecare.com"
+                      target="_blank"
+                      class="btn-live"
+                      ><i class="bi bi-box-arrow-up-right"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+              <div class="portfolio-card-content">
+                <span class="portfolio-category">Healthcare</span>
+                <h3 class="portfolio-title">Alleva Home Care</h3>
+                <p class="portfolio-desc">
+                  Senior home care service in Seattle. One-on-one care, dementia
+                  support, and care management solutions.
+                </p>
+                <ul class="portfolio-tech">
+                  <li>PHP</li>
+                  <li>Laravel</li>
+                  <li>MySQL</li>
+                  <li>APIs</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="py-5 section-alt">
+        <div class="container text-center">
+          <p class="section-heading">Interested in Working Together?</p>
+          <h2 class="section-title">Let's Build Something Incredible</h2>
+          <p class="section-subtitle mx-auto mb-4" style="max-width: 600px">
+            Looking for a skilled full-stack developer to bring your ideas to
+            life? I'm available for new projects and collaborations.
+          </p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center">
+            <a href="mailto:senghanshyamjdp@gmail.com" class="btn-primary-glow">
+              <i class="bi bi-envelope-fill"></i> Get in Touch
+            </a>
+            <a href="index.html" class="btn-outline-glow">
+              <i class="bi bi-house-door"></i> Back to Home
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <!-- Portfolio Filter Script -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const cards = document.querySelectorAll(".portfolio-card");
+
+        filterBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            // Update active state
+            filterBtns.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+
+            const filter = btn.dataset.filter;
+
+            cards.forEach((card) => {
+              if (filter === "all" || card.dataset.category === filter) {
+                card.style.display = "";
+                card.classList.add("fade-in");
+              } else {
+                card.style.display = "none";
+                card.classList.remove("fade-in");
+              }
+            });
+          });
+        });
+
+        // Animate cards on scroll
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        cards.forEach((card) => observer.observe(card));
+      });
+    </script>
+
+    <noscript
+      >Please enable JavaScript to view the complete experience.</noscript
+    >
+  </body>
+</html>
