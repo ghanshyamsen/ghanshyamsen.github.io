@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      Next.js 14 App Router: Server Components Deep Dive | Ghanshyam Sen
+    </title>
+    <meta
+      name="description"
+      content="Explore React Server Components, streaming, and the new app router architecture in Next.js 14 for building faster web apps."
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link href="../style.css" rel="stylesheet" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script defer src="../scripts/layout.js"></script>
+  </head>
+  <body class="page" data-page="blog">
+    <div id="header"></div>
+
+    <main style="padding-top: 100px">
+      <section class="py-5">
+        <div class="container">
+          <!-- Blog Header -->
+          <div class="blog-header">
+            <div class="blog-header-meta">
+              <span class="blog-card-category">React</span>
+              <span><i class="bi bi-calendar3"></i> December 31, 2025</span>
+              <span><i class="bi bi-clock"></i> 12 min read</span>
+            </div>
+            <h1 class="blog-title">
+              Next.js 14 App Router: Server Components Deep Dive
+            </h1>
+            <p class="section-subtitle">
+              Explore React Server Components, streaming, and the new app router
+              architecture in Next.js 14 for building faster web apps.
+            </p>
+          </div>
+
+          <!-- Featured Image -->
+          <img
+            src="../images/blog-react.png"
+            alt="Next.js 14 Server Components"
+            class="blog-featured-image"
+          />
+
+          <!-- Blog Content -->
+          <article class="blog-content">
+            <p>
+              Next.js 14 introduces revolutionary changes with the App Router
+              and React Server Components. After migrating several production
+              applications to this new architecture, I've learned what works,
+              what doesn't, and how to leverage these features for maximum
+              performance. In this comprehensive guide, I'll share practical
+              insights from real-world implementations.
+            </p>
+
+            <h2>Understanding Server Components</h2>
+            <p>
+              React Server Components (RSC) fundamentally change how we think
+              about React applications. Unlike traditional components that run
+              on the client, Server Components execute on the server and send
+              rendered HTML to the browser. This means zero JavaScript is
+              shipped for these components.
+            </p>
+
+            <pre><code>// app/page.tsx - Server Component by default
+// No 'use client' directive = Server Component
+
+async function HomePage() {
+  // This code runs on the SERVER only
+  // You can directly access databases, file systems, etc.
+  const posts = await db.post.findMany({
+    orderBy: { createdAt: 'desc' },
+    take: 10,
+    include: { author: true }
+  });
+  
+  return (
+    &lt;div className="container mx-auto"&gt;
+      &lt;h1 className="text-4xl font-bold"&gt;Latest Posts&lt;/h1&gt;
+      &lt;div className="grid grid-cols-3 gap-6"&gt;
+        {posts.map(post =&gt; (
+          &lt;PostCard key={post.id} post={post} /&gt;
+        ))}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+}
+
+export default HomePage;</code></pre>
+
+            <h2>Benefits of Server Components</h2>
+            <p>
+              The advantages of Server Components are significant and
+              measurable:
+            </p>
+
+            <ul>
+              <li>
+                <strong>Zero JavaScript bundle:</strong> Server Components don't
+                add to your client bundle size. A component with 50KB of
+                dependencies ships 0KB to the client.
+              </li>
+              <li>
+                <strong>Direct database access:</strong> Query your database
+                directly in components without creating API routes.
+              </li>
+              <li>
+                <strong>Automatic code splitting:</strong> Only Client
+                Components are bundled and sent to the browser.
+              </li>
+              <li>
+                <strong>Better SEO:</strong> Content is rendered on the server
+                and immediately available to search engines.
+              </li>
+              <li>
+                <strong>Improved security:</strong> Sensitive logic and API keys
+                stay on the server.
+              </li>
+            </ul>
+
+            <h2>Client Components: When to Use 'use client'</h2>
+            <p>
+              You need Client Components when you require interactivity, browser
+              APIs, or React hooks like useState and useEffect:
+            </p>
+
+            <pre><code>// components/SearchBar.tsx
+'use client'  // This directive makes it a Client Component
+
+import { useState, useTransition } from 'react';
+import { useRouter } from 'next/navigation';
+
+export function SearchBar() {
+  const [query, setQuery] = useState('');
+  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  
+  const handleSearch = (e: React.FormEvent) =&gt; {
+    e.preventDefault();
+    startTransition(() =&gt; {
+      router.push(`/search?q=${encodeURIComponent(query)}`);
+    });
+  };
+  
+  return (
+    &lt;form onSubmit={handleSearch} className="relative"&gt;
+      &lt;input
+        type="search"
+        value={query}
+        onChange={(e) =&gt; setQuery(e.target.value)}
+        placeholder="Search posts..."
+        className="w-full px-4 py-2 rounded-lg border"
+      /&gt;
+      {isPending &amp;&amp; &lt;span className="loading"&gt;Searching...&lt;/span&gt;}
+    &lt;/form&gt;
+  );
+}</code></pre>
+
+            <h2>Data Fetching Patterns</h2>
+            <p>
+              Next.js 14 provides multiple ways to fetch data with fine-grained
+              caching control:
+            </p>
+
+            <pre><code>// 1. Static data - cached indefinitely (default)
+async function getPost(id: string) {
+  const res = await fetch(`https://api.example.com/posts/${id}`);
+  // This data is cached and reused across requests
+  return res.json();
+}
+
+// 2. Dynamic data - never cached
+async function getLatestPosts() {
+  const res = await fetch('https://api.example.com/posts', {
+    cache: 'no-store'  // Opt out of caching
+  });
+  return res.json();
+}
+
+// 3. Revalidate on interval
+async function getPopularPosts() {
+  const res = await fetch('https://api.example.com/posts/popular', {
+    next: { revalidate: 60 }  // Revalidate every 60 seconds
+  });
+  return res.json();
+}
+
+// 4. Revalidate on demand with tags
+async function getProduct(id: string) {
+  const res = await fetch(`https://api.example.com/products/${id}`, {
+    next: { tags: ['products', `product-${id}`] }
+  });
+  return res.json();
+}
+
+// Revalidate in a Server Action
+'use server'
+import { revalidateTag } from 'next/cache';
+
+async function updateProduct(id: string, data: ProductData) {
+  await db.product.update({ where: { id }, data });
+  revalidateTag(`product-${id}`);
+}</code></pre>
+
+            <h2>Streaming with Suspense</h2>
+            <p>
+              One of the most powerful features is streaming. You can show parts
+              of your page immediately while slower content loads in the
+              background:
+            </p>
+
+            <pre><code>// app/dashboard/page.tsx
+import { Suspense } from 'react';
+import { UserGreeting } from './UserGreeting';
+import { Analytics } from './Analytics';
+import { RecentActivity } from './RecentActivity';
+import { AnalyticsSkeleton, ActivitySkeleton } from './skeletons';
+
+export default function DashboardPage() {
+  return (
+    &lt;div className="dashboard"&gt;
+      &lt;h1&gt;Dashboard&lt;/h1&gt;
+      
+      {/* Fast - renders immediately */}
+      &lt;UserGreeting /&gt;
+      
+      {/* Slow - streams in when ready */}
+      &lt;Suspense fallback={&lt;AnalyticsSkeleton /&gt;}&gt;
+        &lt;Analytics /&gt;
+      &lt;/Suspense&gt;
+      
+      &lt;Suspense fallback={&lt;ActivitySkeleton /&gt;}&gt;
+        &lt;RecentActivity /&gt;
+      &lt;/Suspense&gt;
+    &lt;/div&gt;
+  );
+}
+
+// This component can take 3 seconds to load...
+async function Analytics() {
+  const data = await getAnalytics(); // Slow database query
+  return &lt;AnalyticsDisplay data={data} /&gt;;
+}
+
+// ...but users see the skeleton immediately, not a blank page</code></pre>
+
+            <h2>Route Handlers (API Routes)</h2>
+            <p>
+              The new Route Handlers replace the old API routes with a more
+              intuitive file-based approach:
+            </p>
+
+            <pre><code>// app/api/posts/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
+import { auth } from '@/lib/auth';
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
+  const page = parseInt(searchParams.get('page') || '1');
+  const limit = 10;
+  
+  const posts = await db.post.findMany({
+    skip: (page - 1) * limit,
+    take: limit,
+    orderBy: { createdAt: 'desc' }
+  });
+  
+  return NextResponse.json({ posts, page });
+}
+
+export async function POST(request: NextRequest) {
+  const session = await auth();
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  
+  const body = await request.json();
+  const post = await db.post.create({
+    data: {
+      ...body,
+      authorId: session.user.id
+    }
+  });
+  
+  return NextResponse.json(post, { status: 201 });
+}
+
+// app/api/posts/[id]/route.ts
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  const post = await db.post.findUnique({
+    where: { id: params.id }
+  });
+  
+  if (!post) {
+    return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  }
+  
+  return NextResponse.json(post);
+}</code></pre>
+
+            <h2>Server Actions</h2>
+            <p>
+              Server Actions allow you to define server-side functions that can
+              be called directly from Client Components:
+            </p>
+
+            <pre><code>// app/actions.ts
+'use server'
+
+import { db } from '@/lib/db';
+import { revalidatePath } from 'next/cache';
+
+export async function createPost(formData: FormData) {
+  const title = formData.get('title') as string;
+  const content = formData.get('content') as string;
+  
+  await db.post.create({
+    data: { title, content }
+  });
+  
+  revalidatePath('/posts');
+}
+
+// components/CreatePostForm.tsx
+'use client'
+
+import { createPost } from '@/app/actions';
+
+export function CreatePostForm() {
+  return (
+    &lt;form action={createPost}&gt;
+      &lt;input name="title" placeholder="Title" required /&gt;
+      &lt;textarea name="content" placeholder="Content" required /&gt;
+      &lt;button type="submit"&gt;Create Post&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}</code></pre>
+
+            <h2>Key Takeaways</h2>
+            <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0">
+              <ul style="margin: 0; color: var(--text-muted)">
+                <li>
+                  <strong style="color: var(--text)"
+                    >Server Components by default</strong
+                  >
+                  - Components are server-rendered unless you add 'use client'
+                </li>
+                <li>
+                  <strong style="color: var(--text)"
+                    >Client Components for interactivity</strong
+                  >
+                  - Use 'use client' only when you need hooks or browser APIs
+                </li>
+                <li>
+                  <strong style="color: var(--text)"
+                    >Streaming with Suspense</strong
+                  >
+                  - Show content progressively for better perceived performance
+                </li>
+                <li>
+                  <strong style="color: var(--text)"
+                    >Flexible data fetching</strong
+                  >
+                  - Choose between static, dynamic, and revalidating strategies
+                </li>
+                <li>
+                  <strong style="color: var(--text)">Route Handlers</strong> -
+                  New file-based API route format
+                </li>
+                <li>
+                  <strong style="color: var(--text)">Server Actions</strong> -
+                  Call server functions directly from forms
+                </li>
+              </ul>
+            </div>
+
+            <h2>Migration Tips</h2>
+            <p>
+              If you're migrating from the Pages Router, here are some tips:
+            </p>
+            <ul>
+              <li>
+                Start with new features in the App Router while keeping existing
+                pages
+              </li>
+              <li>Migrate page by page, not all at once</li>
+              <li>Replace getServerSideProps with async components</li>
+              <li>Replace getStaticProps with fetch + caching options</li>
+              <li>Move API routes to Route Handlers gradually</li>
+            </ul>
+
+            <h2>Conclusion</h2>
+            <p>
+              Next.js 14's App Router and Server Components represent a paradigm
+              shift in React development. The learning curve is steep, but the
+              performance benefits—smaller bundles, faster initial loads, and
+              streaming—make it worthwhile for new projects. Start experimenting
+              with Server Components today, and you'll see why this is the
+              future of React development.
+            </p>
+
+            <div class="blog-tags">
+              <span class="blog-tag">Next.js</span>
+              <span class="blog-tag">React</span>
+              <span class="blog-tag">Server Components</span>
+              <span class="blog-tag">App Router</span>
+              <span class="blog-tag">TypeScript</span>
+            </div>
+
+            <!-- Author Box -->
+            <div
+              class="card-dark"
+              style="
+                display: flex;
+                gap: 1.5rem;
+                align-items: center;
+                padding: 1.5rem;
+                margin: 2rem 0;
+              "
+            >
+              <img
+                src="../assest/Profile.png"
+                alt="Ghanshyam Sen"
+                style="
+                  width: 80px;
+                  height: 80px;
+                  border-radius: 50%;
+                  object-fit: cover;
+                "
+              />
+              <div>
+                <h5 style="margin: 0 0 0.5rem; color: var(--text)">
+                  Written by Ghanshyam Sen
+                </h5>
+                <p
+                  style="margin: 0; color: var(--text-muted); font-size: 0.9rem"
+                >
+                  Senior Full-Stack Engineer with 6+ years of experience
+                  building scalable web applications. Passionate about clean
+                  code, performance optimization, and developer experience.
+                </p>
+              </div>
+            </div>
+
+            <!-- Navigation -->
+                      <div class="blog-nav">
+            <a href="docker-php-setup.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">Docker for PHP</div>
+            </a>
+            <a href="postgresql-vs-mysql-2026.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">PostgreSQL vs MySQL</div>
+            </a>
+          </div>
+        </article>
+        </div>
+      </section>
+    </main>
+
+    <div id="footer"></div>
+  </body>
+</html>
+

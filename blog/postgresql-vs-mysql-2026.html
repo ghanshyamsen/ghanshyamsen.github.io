@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PostgreSQL vs MySQL in 2026: Which One Should You Choose? | Ghanshyam Sen</title>
+  <meta name="description" content="A comprehensive comparison of PostgreSQL and MySQL for modern applications - features, performance, and use cases explained." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">Database</span>
+            <span><i class="bi bi-calendar3"></i> December 29, 2025</span>
+            <span><i class="bi bi-clock"></i> 10 min read</span>
+          </div>
+          <h1 class="blog-title">PostgreSQL vs MySQL in 2026: Which One Should You Choose?</h1>
+          <p class="section-subtitle">A comprehensive comparison of PostgreSQL and MySQL for modern applications - features, performance, and use cases explained.</p>
+        </div>
+
+        <img src="../images/blog-mysql.png" alt="PostgreSQL vs MySQL Comparison" class="blog-featured-image" />
+
+        <article class="blog-content">
+          <p>After working with both PostgreSQL and MySQL in production for over 6 years, I've developed strong opinions about when to use each. Both databases have evolved significantly, but they excel in different scenarios. In this guide, I'll help you make the right choice for your next project.</p>
+
+          <h2>Quick Comparison Table</h2>
+          <p>Let's start with a high-level comparison:</p>
+          
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0; overflow-x: auto;">
+            <table style="width: 100%; color: var(--text-muted); border-collapse: collapse;">
+              <tr style="border-bottom: 1px solid var(--border);">
+                <th style="padding: 0.75rem; text-align: left; color: var(--text);">Feature</th>
+                <th style="padding: 0.75rem; text-align: left; color: var(--text);">PostgreSQL</th>
+                <th style="padding: 0.75rem; text-align: left; color: var(--text);">MySQL</th>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem;">JSON Support</td>
+                <td style="padding: 0.75rem;">JSONB (binary, indexed)</td>
+                <td style="padding: 0.75rem;">JSON (text-based)</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem;">Full-Text Search</td>
+                <td style="padding: 0.75rem;">Built-in, powerful</td>
+                <td style="padding: 0.75rem;">Basic, needs tuning</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border);">
+                <td style="padding: 0.75rem;">Replication</td>
+                <td style="padding: 0.75rem;">Logical + Physical</td>
+                <td style="padding: 0.75rem;">Simpler setup</td>
+              </tr>
+              <tr>
+                <td style="padding: 0.75rem;">Complex Queries</td>
+                <td style="padding: 0.75rem;">Excellent</td>
+                <td style="padding: 0.75rem;">Good</td>
+              </tr>
+            </table>
+          </div>
+
+          <h2>PostgreSQL Advantages</h2>
+          <p>PostgreSQL offers several features that make it ideal for complex applications:</p>
+
+          <h3>1. JSONB - The Game Changer</h3>
+          <p>PostgreSQL's JSONB type stores JSON in binary format with full indexing support. This makes it perfect for semi-structured data.</p>
+          
+          <pre><code>-- Create table with JSONB column
+CREATE TABLE products (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  attributes JSONB DEFAULT '{}'
+);
+
+-- Insert data
+INSERT INTO products (name, attributes) VALUES
+('Laptop', '{"brand": "Dell", "specs": {"ram": "16GB", "ssd": "512GB"}}'),
+('Phone', '{"brand": "Apple", "specs": {"storage": "128GB"}}');
+
+-- Create GIN index for fast JSONB queries
+CREATE INDEX idx_products_attributes ON products USING GIN (attributes);
+
+-- Query JSONB - extremely fast with index
+SELECT * FROM products 
+WHERE attributes @> '{"brand": "Dell"}';
+
+-- Query nested JSONB
+SELECT name, attributes->'specs'->>'ram' as ram
+FROM products 
+WHERE attributes->'specs'->>'ram' IS NOT NULL;</code></pre>
+
+          <h3>2. Advanced Data Types</h3>
+          <p>PostgreSQL supports arrays, ranges, UUID, and custom types natively:</p>
+          
+          <pre><code>-- Arrays
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255),
+  tags TEXT[] DEFAULT '{}'
+);
+
+INSERT INTO users (name, tags) VALUES 
+('John', ARRAY['developer', 'backend', 'php']);
+
+SELECT * FROM users WHERE 'developer' = ANY(tags);
+
+-- Range types for scheduling
+CREATE TABLE bookings (
+  id SERIAL PRIMARY KEY,
+  room_id INT,
+  during TSTZRANGE,
+  EXCLUDE USING GIST (room_id WITH =, during WITH &&)
+);
+
+-- This constraint prevents double-booking automatically!</code></pre>
+
+          <h3>3. Window Functions and CTEs</h3>
+          <p>Complex analytical queries are PostgreSQL's strength:</p>
+          
+          <pre><code>-- Running totals, rankings, and analytics
+WITH monthly_sales AS (
+  SELECT 
+    DATE_TRUNC('month', created_at) as month,
+    product_id,
+    SUM(amount) as total
+  FROM sales
+  GROUP BY 1, 2
+)
+SELECT 
+  month,
+  product_id,
+  total,
+  SUM(total) OVER (PARTITION BY product_id ORDER BY month) as running_total,
+  RANK() OVER (PARTITION BY month ORDER BY total DESC) as monthly_rank
+FROM monthly_sales
+ORDER BY month, monthly_rank;</code></pre>
+
+          <h2>MySQL Advantages</h2>
+          <p>MySQL has its own strengths, particularly in specific use cases:</p>
+
+          <h3>1. Simplicity and Ease of Use</h3>
+          <p>MySQL is easier to set up and maintain, especially for smaller applications:</p>
+          
+          <pre><code>-- Simple, straightforward syntax
+CREATE TABLE posts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_created (created_at)
+) ENGINE=InnoDB;
+
+-- Basic CRUD operations are identical
+INSERT INTO posts (title, content) VALUES ('Hello', 'World');
+SELECT * FROM posts WHERE id = 1;</code></pre>
+
+          <h3>2. Read Performance</h3>
+          <p>For simple read-heavy workloads, MySQL can be faster:</p>
+          
+          <pre><code>-- MySQL is optimized for simple queries
+SELECT p.*, u.name as author_name
+FROM posts p
+JOIN users u ON p.user_id = u.id
+WHERE p.status = 'published'
+ORDER BY p.created_at DESC
+LIMIT 10;
+
+-- Read replicas are easy to set up
+-- Just configure binlog and replica, and you're done</code></pre>
+
+          <h3>3. Wider Hosting Support</h3>
+          <p>MySQL is available on almost every shared hosting provider, making it ideal for smaller projects and WordPress sites.</p>
+
+          <h2>Performance Benchmarks</h2>
+          <p>In my experience with production systems:</p>
+          
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Simple SELECT queries:</strong> MySQL is ~10-15% faster</li>
+              <li><strong style="color: var(--text);">Complex JOINs:</strong> PostgreSQL is 2-3x faster</li>
+              <li><strong style="color: var(--text);">JSONB queries:</strong> PostgreSQL is 5-10x faster than MySQL JSON</li>
+              <li><strong style="color: var(--text);">Full-text search:</strong> PostgreSQL wins significantly</li>
+              <li><strong style="color: var(--text);">Bulk inserts:</strong> Similar performance</li>
+            </ul>
+          </div>
+
+          <h2>When to Choose PostgreSQL</h2>
+          <p>Choose PostgreSQL when you need:</p>
+          <ul>
+            <li><strong>Complex queries:</strong> Analytics, reporting, data warehousing</li>
+            <li><strong>JSON data:</strong> Semi-structured data with querying needs</li>
+            <li><strong>Data integrity:</strong> Strict ACID compliance, constraints</li>
+            <li><strong>Full-text search:</strong> Built-in search without Elasticsearch</li>
+            <li><strong>GIS/Location data:</strong> PostGIS extension is industry-leading</li>
+            <li><strong>Custom types:</strong> Need for arrays, ranges, enums</li>
+          </ul>
+
+          <h2>When to Choose MySQL</h2>
+          <p>Choose MySQL when you need:</p>
+          <ul>
+            <li><strong>Simple CRUD:</strong> Basic content management systems</li>
+            <li><strong>Read-heavy workloads:</strong> Blogs, news sites, catalogs</li>
+            <li><strong>Shared hosting:</strong> Limited server access</li>
+            <li><strong>Team familiarity:</strong> Team knows MySQL well</li>
+            <li><strong>WordPress:</strong> It's the standard for WordPress</li>
+            <li><strong>Simple replication:</strong> Quick master-slave setup needed</li>
+          </ul>
+
+          <h2>Key Takeaways</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">New projects:</strong> Default to PostgreSQL for flexibility</li>
+              <li><strong style="color: var(--text);">Complex data:</strong> PostgreSQL's JSONB and types are unmatched</li>
+              <li><strong style="color: var(--text);">Simple apps:</strong> MySQL is perfectly fine and easier</li>
+              <li><strong style="color: var(--text);">Both are excellent:</strong> You can't go wrong with either</li>
+              <li><strong style="color: var(--text);">Know your data:</strong> Choose based on query patterns, not popularity</li>
+            </ul>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>In 2026, I recommend PostgreSQL for new projects unless you have specific reasons to choose MySQL. PostgreSQL's advanced features, better standards compliance, and superior handling of complex queries make it the better choice for modern applications. That said, MySQL remains an excellent choice for simpler applications and read-heavy workloads.</p>
+          
+          <p>The best database is the one your team can operate effectively. Both PostgreSQL and MySQL are production-ready, battle-tested, and will serve you well.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">PostgreSQL</span>
+            <span class="blog-tag">MySQL</span>
+            <span class="blog-tag">Database</span>
+            <span class="blog-tag">SQL</span>
+            <span class="blog-tag">Backend</span>
+          </div>
+
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications. Passionate about clean code, performance optimization, and developer experience.</p>
+            </div>
+          </div>
+
+                    <div class="blog-nav">
+            <a href="nextjs-14-server-components.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">Next.js 14 Server Components</div>
+            </a>
+            <a href="oauth-laravel-social-login.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">OAuth in Laravel</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>
+

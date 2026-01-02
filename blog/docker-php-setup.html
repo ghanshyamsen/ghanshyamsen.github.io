@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Docker for PHP Developers: Complete Local Setup Guide | Ghanshyam Sen</title>
+  <meta name="description" content="Learn how to containerize your PHP applications with Docker, set up development environments, and deploy to production seamlessly." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+
+  <div id="header"></div>
+
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        
+        <!-- Blog Header -->
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">DevOps</span>
+            <span><i class="bi bi-calendar3"></i> January 2, 2026</span>
+            <span><i class="bi bi-clock"></i> 10 min read</span>
+          </div>
+          <h1 class="blog-title">Docker for PHP Developers: Complete Local Setup Guide</h1>
+          <p class="section-subtitle">Learn how to containerize your PHP applications with Docker, set up development environments, and deploy to production seamlessly.</p>
+        </div>
+
+        <!-- Featured Image -->
+        <img src="../images/blog-laravel-api.png" alt="Docker for PHP Development" class="blog-featured-image" />
+
+        <!-- Blog Content -->
+        <article class="blog-content">
+          <p>Docker has revolutionized how we develop and deploy applications. For PHP developers, Docker eliminates the "works on my machine" problem and provides consistent environments from development to production. In this comprehensive guide, I'll show you how to set up a complete Docker environment for PHP development.</p>
+
+          <h2>Why Docker for PHP Development?</h2>
+          <p>Before diving into the setup, let's understand why Docker is a game-changer for PHP developers:</p>
+          
+          <ul>
+            <li><strong>Consistency:</strong> Same environment across all team members and servers</li>
+            <li><strong>Isolation:</strong> Multiple projects with different PHP versions without conflicts</li>
+            <li><strong>Easy onboarding:</strong> New developers can start with a single command</li>
+            <li><strong>Production parity:</strong> Development environment matches production exactly</li>
+          </ul>
+
+          <h2>1. Basic Docker Setup for PHP</h2>
+          <p>Let's start with a simple Dockerfile for a PHP application. This is the foundation of your containerized setup.</p>
+          
+          <pre><code># Dockerfile
+FROM php:8.3-fpm
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    unzip
+
+# Clear cache
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+
+# Get latest Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Set working directory
+WORKDIR /var/www
+
+# Copy application files
+COPY . /var/www
+
+# Install dependencies
+RUN composer install --no-interaction --optimize-autoloader
+
+# Expose port 9000 and start php-fpm server
+EXPOSE 9000
+CMD ["php-fpm"]</code></pre>
+
+          <h2>2. Docker Compose for Complete Stack</h2>
+          <p>Docker Compose allows you to define and run multi-container applications. Here's a complete setup with PHP, Nginx, MySQL, and Redis:</p>
+          
+          <pre><code># docker-compose.yml
+version: '3.8'
+
+services:
+  # PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php-app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  # Nginx Service
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - app-network
+
+  # MySQL Service
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+    volumes:
+      - dbdata:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  # Redis Service
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local</code></pre>
+
+          <h2>3. Nginx Configuration</h2>
+          <p>Create a proper Nginx configuration for your PHP application:</p>
+          
+          <pre><code># docker/nginx/conf.d/app.conf
+server {
+    listen 80;
+    index index.php index.html;
+    error_log  /var/log/nginx/error.log;
+    access_log /var/log/nginx/access.log;
+    root /var/www/public;
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass app:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+        gzip_static on;
+    }
+}</code></pre>
+
+          <h2>4. PHP Configuration</h2>
+          <p>Customize PHP settings for development:</p>
+          
+          <pre><code># docker/php/local.ini
+upload_max_filesize=40M
+post_max_size=40M
+memory_limit=256M
+max_execution_time=600
+max_input_time=600</code></pre>
+
+          <h2>5. Running Your Docker Environment</h2>
+          <p>With everything set up, you can now run your application:</p>
+          
+          <pre><code># Build and start containers
+docker-compose up -d
+
+# View running containers
+docker-compose ps
+
+# View logs
+docker-compose logs -f app
+
+# Execute commands in container
+docker-compose exec app php artisan migrate
+
+# Stop containers
+docker-compose down
+
+# Stop and remove volumes
+docker-compose down -v</code></pre>
+
+          <h2>6. Development Workflow</h2>
+          <p>Here are common commands you'll use daily:</p>
+          
+          <pre><code># Install Composer dependencies
+docker-compose exec app composer install
+
+# Run migrations
+docker-compose exec app php artisan migrate
+
+# Clear cache
+docker-compose exec app php artisan cache:clear
+
+# Run tests
+docker-compose exec app php artisan test
+
+# Access MySQL
+docker-compose exec db mysql -u root -p
+
+# Access container shell
+docker-compose exec app bash</code></pre>
+
+          <h2>7. Production Optimization</h2>
+          <p>For production, create a separate Dockerfile with optimizations:</p>
+          
+          <pre><code># Dockerfile.prod
+FROM php:8.3-fpm as base
+
+RUN apt-get update && apt-get install -y \
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip
+
+RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd opcache
+
+# OPcache configuration
+RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.memory_consumption=256" >> /usr/local/etc/php/conf.d/opcache.ini \
+    && echo "opcache.max_accelerated_files=20000" >> /usr/local/etc/php/conf.d/opcache.ini
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www
+
+COPY . /var/www
+
+RUN composer install --no-dev --optimize-autoloader --no-interaction
+
+RUN chown -R www-data:www-data /var/www
+
+EXPOSE 9000
+CMD ["php-fpm"]</code></pre>
+
+          <h2>Key Takeaways</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Consistency</strong> - Docker ensures identical environments everywhere</li>
+              <li><strong style="color: var(--text);">Docker Compose</strong> - Manage multi-container setups easily</li>
+              <li><strong style="color: var(--text);">Volume mounting</strong> - Enable live code reloading during development</li>
+              <li><strong style="color: var(--text);">Separate configs</strong> - Use different Dockerfiles for dev and production</li>
+              <li><strong style="color: var(--text);">OPcache</strong> - Enable in production for better performance</li>
+              <li><strong style="color: var(--text);">Security</strong> - Run containers as non-root user in production</li>
+            </ul>
+          </div>
+
+          <h2>Conclusion</h2>
+          <p>Docker transforms PHP development by providing consistent, isolated environments that mirror production. Start with the basic setup I've shown here, then gradually add services like Redis, Elasticsearch, or queue workers as your application grows.</p>
+          
+          <p>The initial setup takes time, but the benefits—consistent environments, easy onboarding, and production parity—make it worthwhile for any serious PHP project.</p>
+
+          <div class="blog-tags">
+            <span class="blog-tag">Docker</span>
+            <span class="blog-tag">PHP</span>
+            <span class="blog-tag">DevOps</span>
+            <span class="blog-tag">Laravel</span>
+            <span class="blog-tag">Nginx</span>
+          </div>
+
+          <!-- Author Box -->
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications. Passionate about clean code, performance optimization, and developer experience.</p>
+            </div>
+          </div>
+
+          <!-- Navigation -->
+                    <div class="blog-nav">
+            <a href="../blog.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Back</div>
+              <div class="blog-nav-title">All Articles</div>
+            </a>
+            <a href="nextjs-14-server-components.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">Next.js 14 Server Components</div>
+            </a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+</body>
+</html>
+

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scaling WebSockets with Redis Pub/Sub: Multi-Server Setup | Ghanshyam Sen</title>
+  <meta name="description" content="Scale your Socket.io application across multiple servers using Redis adapter." />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link href="../style.css" rel="stylesheet" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="../scripts/layout.js"></script>
+</head>
+<body class="page" data-page="blog">
+  <div id="header"></div>
+  <main style="padding-top: 100px;">
+    <section class="py-5">
+      <div class="container">
+        <div class="blog-header">
+          <div class="blog-header-meta">
+            <span class="blog-card-category">Node.js</span>
+            <span><i class="bi bi-calendar3"></i> December 23, 2025</span>
+            <span><i class="bi bi-clock"></i> 10 min read</span>
+          </div>
+          <h1 class="blog-title">Scaling WebSockets with Redis Pub/Sub: Multi-Server Setup</h1>
+          <p class="section-subtitle">Scale your Socket.io application across multiple servers using Redis adapter.</p>
+        </div>
+        <img src="../images/blog-laravel-api.png" alt="Scaling WebSockets with Redis Pub/Sub: Multi-Server Setup" class="blog-featured-image" />
+        <article class="blog-content">
+          <p>When your WebSocket application grows beyond a single server, you need a way to synchronize messages across all instances. Redis Pub/Sub is the solution, and Socket.io makes it incredibly easy to implement.</p>
+          <h2>The Problem</h2>
+          <p>Without Redis, each Socket.io server maintains its own list of connected clients. If User A is connected to Server 1 and User B to Server 2, messages from A won't reach B. Redis solves this by acting as a message broker between all servers.</p>
+          <h2>Install Dependencies</h2>
+          <pre><code>npm install socket.io @socket.io/redis-adapter redis</code></pre>
+          <h2>Configure Socket.io with Redis</h2>
+          <pre><code>const { Server } = require('socket.io');
+const { createAdapter } = require('@socket.io/redis-adapter');
+const { createClient } = require('redis');
+const http = require('http');
+
+const server = http.createServer();
+const io = new Server(server, {
+  cors: { origin: '*' }
+});
+
+// Create Redis clients
+const pubClient = createClient({ url: process.env.REDIS_URL });
+const subClient = pubClient.duplicate();
+
+// Connect and set up adapter
+Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
+  io.adapter(createAdapter(pubClient, subClient));
+  console.log('Redis adapter connected');
+  
+  server.listen(3000, () => {
+    console.log('Socket.io server running on port 3000');
+  });
+});
+
+io.on('connection', (socket) => {
+  console.log('User connected:', socket.id);
+  
+  socket.on('join-room', (roomId) => {
+    socket.join(roomId);
+  });
+  
+  socket.on('message', (data) => {
+    // This broadcasts to ALL servers via Redis
+    io.to(data.roomId).emit('message', data);
+  });
+});</code></pre>
+          <h2>Nginx Load Balancer with Sticky Sessions</h2>
+          <pre><code>upstream socket_servers {
+    ip_hash;  # Sticky sessions based on client IP
+    server 127.0.0.1:3001;
+    server 127.0.0.1:3002;
+    server 127.0.0.1:3003;
+}
+
+server {
+    listen 80;
+    
+    location /socket.io/ {
+        proxy_pass http://socket_servers;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+}</code></pre>
+          <h2>Key Takeaways</h2>
+          <div class="card-dark" style="padding: 1.5rem; margin: 2rem 0;">
+            <ul style="margin: 0; color: var(--text-muted);">
+              <li><strong style="color: var(--text);">Redis Adapter:</strong> Synchronizes events across all server instances</li>
+              <li><strong style="color: var(--text);">Sticky Sessions:</strong> Required for WebSocket handshake to work</li>
+              <li><strong style="color: var(--text);">Horizontal Scaling:</strong> Add more servers as needed</li>
+              <li><strong style="color: var(--text);">Redis Cluster:</strong> Use Redis Cluster for high availability</li>
+            </ul>
+          </div>
+          <div class="blog-tags">
+            <span class="blog-tag">Node.js</span>
+            <span class="blog-tag">Web Development</span>
+            <span class="blog-tag">Best Practices</span>
+          </div>
+          <div class="card-dark" style="display: flex; gap: 1.5rem; align-items: center; padding: 1.5rem; margin: 2rem 0;">
+            <img src="../assest/Profile.png" alt="Ghanshyam Sen" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;" />
+            <div>
+              <h5 style="margin: 0 0 0.5rem; color: var(--text);">Written by Ghanshyam Sen</h5>
+              <p style="margin: 0; color: var(--text-muted); font-size: 0.9rem;">Senior Full-Stack Engineer with 6+ years of experience building scalable web applications.</p>
+            </div>
+          </div>
+                    <div class="blog-nav">
+            <a href="aws-s3-presigned-urls.html" class="blog-nav-item prev">
+              <div class="blog-nav-label"><i class="bi bi-arrow-left"></i> Previous</div>
+              <div class="blog-nav-title">AWS S3 Pre-signed URLs</div>
+            </a>
+            <a href="laravel-queues-masterclass.html" class="blog-nav-item next">
+              <div class="blog-nav-label">Next <i class="bi bi-arrow-right"></i></div>
+              <div class="blog-nav-title">Laravel Queues</div>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+  <div id="footer"></div>
+</body>
+</html>
+
